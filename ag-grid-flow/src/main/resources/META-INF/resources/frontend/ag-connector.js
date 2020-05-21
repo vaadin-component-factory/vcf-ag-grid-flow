@@ -1,6 +1,8 @@
 import {InfiniteRowModelModule} from '@ag-grid-community/infinite-row-model';
 import { Grid } from '@ag-grid-community/core';
 
+import PolymerFrameworkComponentWrapper from "@ag-grid-community/polymer/src/PolymerFrameworkComponentWrapper.js";
+
 if (typeof window.Vaadin.Flow.agGridRenderers === 'undefined') {
     window.Vaadin.Flow.agGridRenderers = [];
 }
@@ -35,8 +37,15 @@ window.Vaadin.Flow.agGridConnector = {
                 // transform the configuration (name of the attribute cellRenderer)
                 // to a javascript function
                 columnDefs.forEach(el => { if (el.cellRenderer != null) {
-                    console.log("ag-grid " + el.cellRenderer);
+                    console.log("ag-grid - cellRenderer {} ", el.cellRenderer);
                     el.cellRenderer = window.Vaadin.Flow.agGridRenderers[el.cellRenderer];
+                }});
+                columnDefs.forEach(el => { if (el.cellRendererFramework != null) {
+                    console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                    el.cellRendererFrameworkCallback = (coldId, rowId, action) => {
+                        console.log("callback {} {} {}", coldId, rowId, action);
+                        c.$server.cellRendererFrameworkCallback(coldId, rowId, action);
+                    };
                 }});
 
                 this.agGrid.gridOptions.api.setColumnDefs(columnDefs);
@@ -66,7 +75,7 @@ window.Vaadin.Flow.agGridConnector = {
                     rowCount: null, // behave as infinite scroll
                     getRows: function (params) {
                         // debugger;
-                        console.log('ag-grid getRows for ' + params.startRow + ' to ' + params.endRow);
+                        console.log('ag-grid - getRows for {} to {} ', params.startRow, params.endRow);
                         c.$server.requestClientPage(params.startRow, params.endRow, params.sortModel, params.filterModel);
                         c.$connector.currentPageParams[params.startRow] = params;
                     }
@@ -101,7 +110,15 @@ window.Vaadin.Flow.agGridConnector = {
             gridOptions.pagination = true;
             //gridOptions.cacheBlockSize = 60;
         }
-        c.$connector.agGrid = new Grid(c, gridOptions, { modules: [InfiniteRowModelModule]});
+
+        let gridParams = {
+            modules: [InfiniteRowModelModule],
+            providedBeanInstances: {
+                frameworkComponentWrapper: new PolymerFrameworkComponentWrapper()
+            }
+        };
+
+        c.$connector.agGrid = new Grid(c, gridOptions, gridParams);
 
         c.$connector.agGrid.gridOptions.api.addEventListener('cellValueChanged', function cellValueChangedHandler(event) {
             c.$server.cellValueChanged(event.column.colDef.field, event.rowIndex, event.oldValue, event.newValue);

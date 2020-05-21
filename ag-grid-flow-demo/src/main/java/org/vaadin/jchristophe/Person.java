@@ -11,6 +11,8 @@ public class Person {
     private int age;
     private String attribute1, attribute2, attribute3, attribute4, attribute5, attribute6, attribute7, attribute8;
 
+    private Price price;
+
     public Person() {
     }
 
@@ -119,6 +121,15 @@ public class Person {
 
     public Person setAttribute8(String attribute8) {
         this.attribute8 = attribute8;
+        return this;
+    }
+
+    public Price getPrice() {
+        return price;
+    }
+
+    public Person setPrice(Price price) {
+        this.price = price;
         return this;
     }
 

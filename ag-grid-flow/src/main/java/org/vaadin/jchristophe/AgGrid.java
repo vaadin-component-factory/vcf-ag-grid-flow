@@ -8,10 +8,11 @@ import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.dependency.JavaScript;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.binder.Setter;
 import com.vaadin.flow.data.provider.DataGenerator;
 import com.vaadin.flow.data.provider.DataProvider;
@@ -45,8 +46,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @NpmPackage(value = "@ag-grid-community/core",version = "23.1.0")
+@NpmPackage(value = "@ag-grid-community/polymer",version = "23.1.0")
 @NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "23.1.0")
-@JavaScript("frontend://ag-connector.js")
+@JsModule("./ag-connector.js")
 @CssImport("@ag-grid-community/core/dist/styles/ag-theme-alpine.min.css")
 @CssImport("@ag-grid-community/core/dist/styles/ag-grid.min.css")
 public class AgGrid<T> extends Div {
@@ -367,6 +369,8 @@ public class AgGrid<T> extends Div {
 
         private String cellRenderer;
 
+        private String cellRendererFramework;
+
         private String cellEditor;
         private Boolean editable = false;
 
@@ -517,6 +521,15 @@ public class AgGrid<T> extends Div {
 
         public Column<T> setSetter(Setter<T, String> setter) {
             this.setter = setter;
+            return this;
+        }
+
+        public String getCellRendererFramework() {
+            return cellRendererFramework;
+        }
+
+        public Column<T> setCellRendererFramework(String cellRendererFramework) {
+            this.cellRendererFramework = cellRendererFramework;
             return this;
         }
     }
@@ -724,6 +737,13 @@ public class AgGrid<T> extends Div {
             log.warn("Value updated from {} to {} for colId {}", oldValue,newValue, colId);
         });
     }
+
+    @ClientCallable
+    private void cellRendererFrameworkCallback(String colId, int rowIndex, String action) {
+        Notification.show("cellRendererFrameworkCallback "+ rowIndex + "-"+ colId + "-"+ action );
+    }
+
+
 
     public void scrollTo(int rowIndex) {
         runBeforeClientResponse(ui -> getElement()

@@ -1,5 +1,6 @@
 package org.vaadin.jchristophe;
 
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.demo.DemoView;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@JsModule("./src/ag-renderer.js")
 @Route("")
 public class DefaultDemoView extends DemoView {
 
@@ -16,6 +18,7 @@ public class DefaultDemoView extends DemoView {
     protected void initView() {
         getElement().setAttribute("style","max-width:90%;");
         createBasicExample();
+        createAdvancedExample();
     }
 
 
@@ -23,13 +26,26 @@ public class DefaultDemoView extends DemoView {
         Div message = createMessageDiv("basic-message");
 
         // begin-source-example
-        // source-example-heading: Basic Example
+        // source-example-heading: Basic 1
         AgGrid<Person> grid = buildGrid();
         grid.refreshColumnDefs();
         grid.setDataProvider(DataProvider.ofCollection(buildPersons()));
         // end-source-example
 
-        addCard("Basic Example", grid, message);
+        addCard("Basic Example", "Basic 1", grid, message);
+    }
+
+    private void createAdvancedExample() {
+        Div message = createMessageDiv("advanced-message");
+
+        // begin-source-example
+        // source-example-heading: Advanced 1
+        AgGrid<Person> grid = buildAdvancedGrid();
+        grid.refreshColumnDefs();
+        grid.setDataProvider(DataProvider.ofCollection(buildPersons()));
+        // end-source-example
+
+        addCard("Advanced Example", "Advanced 1", grid, message);
     }
 
     private AgGrid<Person> buildGrid() {
@@ -45,6 +61,38 @@ public class DefaultDemoView extends DemoView {
         grid.addColumn("lastname",Person::getLastName)
                 .setHeader("LastName")
                 .setSortable(true);
+        return grid;
+    }
+
+    private AgGrid<Person> buildAdvancedGrid() {
+        AgGrid<Person> grid = new AgGrid<>();
+        grid.setHeight("1000px");
+        grid.addColumn("id",Person::getId)
+                .setFrozen(true)
+                .setHeader("Id")
+                .setSortable(true);
+        grid.addColumn("firstname",Person::getFirstName)
+                .setHeader("FirstName")
+                .setSortable(true);
+        grid.addColumn("lastname",Person::getLastName)
+                .setCellRendererFramework("simple-greeting")
+                .setHeader("LastName")
+                .setSortable(true);
+        grid.addColumn("age", Person::getAge)
+                 .setCellRenderer("AdultRenderer")
+                //.setCellRendererFramework("currency-cell-renderer")
+                .setHeader("Age")
+                .setSortable(true);
+
+        grid.addColumn("price", Person::getPrice)
+                //.setCellRenderer("AdultRenderer")
+                .setCellRendererFramework("currency-cell-renderer")
+                .setHeader("Price")
+                .setSortable(true);
+
+
+
+
         return grid;
     }
 
@@ -69,6 +117,7 @@ public class DefaultDemoView extends DemoView {
         person.setFirstName(generateRandomString());
         person.setLastName(generateRandomString());
         person.setAge(generateRandomInt(99));
+        person.setPrice(new Price(generateRandomInt(1000)));
         return person;
     }
 
