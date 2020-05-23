@@ -3,6 +3,9 @@ import { Grid } from '@ag-grid-community/core';
 
 import PolymerFrameworkComponentWrapper from "@ag-grid-community/polymer/src/PolymerFrameworkComponentWrapper.js";
 
+/**
+ * list to register html renderers
+ */
 if (typeof window.Vaadin.Flow.agGridRenderers === 'undefined') {
     window.Vaadin.Flow.agGridRenderers = [];
 }
@@ -39,12 +42,18 @@ window.Vaadin.Flow.agGridConnector = {
                 columnDefs.forEach(el => { if (el.cellRenderer != null) {
                     console.log("ag-grid - cellRenderer {} ", el.cellRenderer);
                     el.cellRenderer = window.Vaadin.Flow.agGridRenderers[el.cellRenderer];
+                    el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
+                        console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                        c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
+                    };
                 }});
+                // register the framework renderer polymer or lit
+                // add cellRendererFrameworkCallback in the column configuration to call actions
                 columnDefs.forEach(el => { if (el.cellRendererFramework != null) {
                     console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
-                    el.cellRendererFrameworkCallback = (coldId, rowId, action) => {
-                        console.log("callback {} {} {}", coldId, rowId, action);
-                        c.$server.cellRendererFrameworkCallback(coldId, rowId, action);
+                    el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
+                        console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                        c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
                     };
                 }});
 
@@ -113,16 +122,17 @@ window.Vaadin.Flow.agGridConnector = {
 
         let gridParams = {
             modules: [InfiniteRowModelModule],
+            // add polymer and lit components available for renderer
             providedBeanInstances: {
                 frameworkComponentWrapper: new PolymerFrameworkComponentWrapper()
             }
         };
 
         c.$connector.agGrid = new Grid(c, gridOptions, gridParams);
-
+        /* cell editor does not work yet
         c.$connector.agGrid.gridOptions.api.addEventListener('cellValueChanged', function cellValueChangedHandler(event) {
             c.$server.cellValueChanged(event.column.colDef.field, event.rowIndex, event.oldValue, event.newValue);
-        });
+        });*/
 
     }
 }

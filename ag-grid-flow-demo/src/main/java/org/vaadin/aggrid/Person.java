@@ -1,4 +1,4 @@
-package org.vaadin.jchristophe;
+package org.vaadin.aggrid;
 
 import java.util.Objects;
 
@@ -144,5 +144,13 @@ public class Person {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

@@ -18,6 +18,7 @@ window.Vaadin.Flow.agGridRenderers["AdultRenderer"] = function AdultRenderer(par
     element.style.color = color;
     return element;
 }
+
 let MyCellRenderer  = function MyCellRenderer () {}
 // function to act as a class
 window.Vaadin.Flow.agGridRenderers["AdultRenderer"] = MyCellRenderer;
@@ -63,96 +64,3 @@ MyCellRenderer.prototype.destroy = function() {
         this.eButton.removeEventListener('click', this.eventListener);
     }
 };
-
-
-import {html, PolymerElement} from "@polymer/polymer/polymer-element.js";
-
-export default class CurrencyCellRenderer extends PolymerElement {
-    static get template() {
-        return html`
-            <span>{{currency}}{{formattedValue}}</span>
-        `;
-    }
-
-    agInit(params) {
-        console.log("params {}", params);
-        console.log("params.value {}", params.value);
-        this.params = params;
-        if (typeof params.value  === 'undefined') {
-
-        } else {
-            // todo jcg rowId, colId, action name
-
-            this.currency = this.params.value.currency;
-            this.value = this.params.value.price;
-        }
-    }
-
-    handleClick(e) {
-        this.params.colDef.cellRendererFrameworkCallback.call(this, 1,2,"action");
-        console.log(this.prop);
-    }
-
-    static get properties() {
-        return {
-            currency: String,
-            value: Number,
-            formattedValue: {
-                type: Number,
-                computed: 'format(value)'
-            }
-        };
-    }
-
-    format(value) {
-        return value ? value.toFixed(2) : value;
-    }
-}
-
-customElements.define('currency-cell-renderer', CurrencyCellRenderer);
-
-import { LitElement, html as htmllit } from 'lit-element';
-
-class SimpleGreeting extends LitElement {
-    static get properties() {
-        return { name: { type: String } };
-    }
-
-    constructor() {
-        super();
-        this.name = 'World';
-    }
-
-    agInit(params) {
-        console.log("params {}", params);
-        this.params = params;
-        if (typeof params.value  === 'undefined') {
-        } else {
-            console.log("params.value {}", params.value);
-            this.name = this.params.value;
-           // this.name = this.params.value.currency;
-
-            //  this.currency = this.params.value.currency;
-          //  this.value = this.params.value.price;
-        }
-    }
-
-    handleClick(e) {
-        // todo jcg rowId, colId, action name
-        debugger;
-        this.params.colDef.cellRendererFrameworkCallback.call(this, this.params.colDef.field,
-            this.params.rowIndex, "handleClick");
-    }
-    createRenderRoot() {
-        /**
-         * Render template without shadow DOM. Note that shadow DOM features like
-         * encapsulated CSS and slots are unavailable.
-         */
-        return this;
-    }
-    render() {
-        return htmllit`<p @click="${this.handleClick}">Hello, ${this.name}!</p>`;
-    }
-}
-
-customElements.define('simple-greeting', SimpleGreeting);

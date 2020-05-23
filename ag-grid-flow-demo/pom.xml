@@ -10,23 +10,24 @@
     <name>AG Grid Demo</name>
     <packaging>war</packaging>
     <parent>
-        <groupId>org.vaadin.jchristophe</groupId>
+        <groupId>org.vaadin.componentfactory</groupId>
         <artifactId>ag-grid-flow-root</artifactId>
         <version>0.4.0</version>
     </parent>
+    <inceptionYear>2020</inceptionYear>
     <organization>
-        <name>Jean-Christophe Gueriaud</name>
+        <name>Vaadin Ltd</name>
+        <url>http://vaadin.com/</url>
     </organization>
+    <licenses>
+        <license>
+            <name>CVALv3</name>
+            <url>https://vaadin.com/license/cval-3</url>
+        </license>
+    </licenses>
     <properties>
         <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
-    <licenses>
-        <license>
-            <name>Apache 2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -106,7 +107,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.vaadin.jchristophe</groupId>
+            <groupId>org.vaadin.componentfactory</groupId>
             <artifactId>ag-grid-flow</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.vaadin/flow-component-demo-helpers -->
@@ -173,8 +174,8 @@
         </plugins>
     </build>
 
-
     <profiles>
+
         <profile>
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>

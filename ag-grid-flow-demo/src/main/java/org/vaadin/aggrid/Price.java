@@ -1,4 +1,4 @@
-package org.vaadin.jchristophe;
+package org.vaadin.aggrid;
 
 /**
  * @author jcgueriaud

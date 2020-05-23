@@ -1,7 +1,8 @@
-package org.vaadin.jchristophe;
+package org.vaadin.aggrid;
 
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
@@ -10,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@JsModule("./src/ag-renderer.js")
+@JsModule("./src/currency-lit-renderer.js")
+@JsModule("./src/currency-polymer-renderer.js")
+@JsModule("./src/currency-html-renderer.js")
 @Route("")
 public class DefaultDemoView extends DemoView {
 
@@ -75,25 +78,41 @@ public class DefaultDemoView extends DemoView {
                 .setHeader("FirstName")
                 .setSortable(true);
         grid.addColumn("lastname",Person::getLastName)
-                .setCellRendererFramework("simple-greeting")
                 .setHeader("LastName")
                 .setSortable(true);
-        grid.addColumn("age", Person::getAge)
-                 .setCellRenderer("AdultRenderer")
+        grid.addColumn("priceHtm", Person::getPrice)
+                 .setCellRenderer("currency-html-renderer")
+                .withActionHandler("currencyClicked", this::currencyClicked)
                 //.setCellRendererFramework("currency-cell-renderer")
-                .setHeader("Age")
+                .setHeader("Price (H)")
                 .setSortable(true);
-
-        grid.addColumn("price", Person::getPrice)
+        grid.addColumn("priceLit", Person::getPrice)
                 //.setCellRenderer("AdultRenderer")
-                .setCellRendererFramework("currency-cell-renderer")
-                .setHeader("Price")
+                .setCellRendererFramework("currency-lit-renderer")
+                .withActionHandler("currencyClicked", this::currencyClicked)
+                .setHeader("Price (L)")
                 .setSortable(true);
+        grid.addColumn("pricePol", Person::getPrice)
+                //.setCellRenderer("AdultRenderer")
+                .setCellRendererFramework("currency-polymer-renderer")
+                .withActionHandler("currencyClicked", this::currencyClicked)
+                .setHeader("Price (P)")
+                .setSortable(true);
+/*
+        for (int i = 0; i < 10; i++) {
 
-
-
-
+            grid.addColumn("price"+i, Person::getPrice)
+                    //.setCellRenderer("currency-html-renderer")
+                    .setCellRendererFramework("currency-lit-renderer")
+                    .setHeader("Price"+i)
+                    .setSortable(true);
+        }
+*/
         return grid;
+    }
+
+    private void currencyClicked(Person person) {
+        Notification.show("Person clicked "+ person.toString());
     }
 
     private List<Person> buildPersons() {
