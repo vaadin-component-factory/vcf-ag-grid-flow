@@ -344,16 +344,6 @@ public class AgGrid<T> extends Div {
     }
 
     @ClientCallable
-    private void cellValueChanged(String colId, int rowIndex, String oldValue, String newValue) {
-        // fetch the row
-        Stream<T> fetch = fetchRowItemFromRowIndex(rowIndex);
-        fetch.findFirst().ifPresent(rowData -> {
-            getColumnByKey(colId).getSetter().accept(rowData, newValue);
-            log.debug("Value updated from {} to {} for colId {}", oldValue,newValue, colId);
-        });
-    }
-
-    @ClientCallable
     private void cellRendererFrameworkCallback(String colId, int rowIndex, String action) {
         Stream<T> fetch = fetchRowItemFromRowIndex(rowIndex);
         fetch.findFirst().ifPresent(rowData -> {

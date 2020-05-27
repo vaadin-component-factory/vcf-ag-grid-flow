@@ -9,11 +9,11 @@ import org.vaadin.aggrid.bean.PersonUtil;
 /**
  * @author jcgueriaud
  */
-@Route(value = "simple", layout = MainLayout.class)
-public class SimpleView extends Div {
+@Route(value = "frozen", layout = MainLayout.class)
+public class FrozenView extends Div {
 
 
-    public SimpleView() {
+    public FrozenView() {
         setSizeFull();
         AgGrid<Person> grid = buildGrid();
         grid.refreshColumnDefs();
@@ -26,14 +26,14 @@ public class SimpleView extends Div {
         grid.setSizeFull();
         grid.addColumn("id",Person::getId)
                 .setFrozen(true)
-                .setHeader("Id")
-                .setSortable(true);
-        grid.addColumn("firstname",Person::getFirstName)
-                .setHeader("FirstName")
-                .setSortable(true);
-        grid.addColumn("lastname",Person::getLastName)
+                .setHeader("Id");
+        for (int i = 0; i < 10; i++) {
+            grid.addColumn("firstname"+i,Person::getFirstName)
+                    .setHeader("FirstName");
+        }
+        grid.addColumn("lastname (frozen)",Person::getLastName)
                 .setHeader("LastName")
-                .setSortable(true);
+                .setFrozen(AbstractColumn.FrozenColumn.right);
         return grid;
     }
 }

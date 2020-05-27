@@ -7,13 +7,21 @@ import org.vaadin.aggrid.bean.Person;
 import org.vaadin.aggrid.bean.PersonUtil;
 
 /**
+ * Here is an example of different ways to style your cells.
+ * <p>You can:
+ *     <ul>
+ *         <li>Add class name for a cell or for the header</li>
+ *         <li>Use an expression to display a dynamic css class name</li>
+ *     </ul>
+ * </p>
+ *
  * @author jcgueriaud
  */
-@Route(value = "simple", layout = MainLayout.class)
-public class SimpleView extends Div {
+@Route(value = "cssClass", layout = MainLayout.class)
+public class CssClassView extends Div {
 
 
-    public SimpleView() {
+    public CssClassView() {
         setSizeFull();
         AgGrid<Person> grid = buildGrid();
         grid.refreshColumnDefs();
@@ -25,15 +33,18 @@ public class SimpleView extends Div {
         AgGrid<Person> grid = new AgGrid<>();
         grid.setSizeFull();
         grid.addColumn("id",Person::getId)
-                .setFrozen(true)
-                .setHeader("Id")
-                .setSortable(true);
+                .setWidth(228)
+                .setHeader("Id");
         grid.addColumn("firstname",Person::getFirstName)
                 .setHeader("FirstName")
-                .setSortable(true);
+                .setCellClass("green");
         grid.addColumn("lastname",Person::getLastName)
-                .setHeader("LastName")
-                .setSortable(true);
+                .setHeaderClass("green")
+                .setHeader("LastName");
+        grid.addColumn("age",Person::getAge)
+                .setCellClassRules("green", "x < 20 ")
+                .setCellClassRules("red", "x > 50 ")
+                .setHeader("Age");
         return grid;
     }
 }

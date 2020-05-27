@@ -18,11 +18,9 @@ package org.vaadin.aggrid;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vaadin.flow.data.binder.Setter;
 import com.vaadin.flow.data.provider.DataGenerator;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.function.SerializableComparator;
-import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.internal.JsonSerializer;
 import org.slf4j.Logger;
@@ -65,11 +63,6 @@ public class Column<T> extends AbstractColumn<T, Column<T>> {
 
     private ValueProvider<T, ?> valueProvider;
 
-    /// todo JCG String is hardcoded, to change
-    private Setter<T, String> setter;
-
-    private SerializableFunction<T, String> classNameGenerator = item -> null;
-
     private DataGenerator<T> dataGenerator;
 
     private Integer width;
@@ -101,24 +94,27 @@ public class Column<T> extends AbstractColumn<T, Column<T>> {
         return resizable;
     }
 
-    public void setResizable(boolean resizable) {
+    public Column<T> setResizable(boolean resizable) {
         this.resizable = resizable;
+        return this;
     }
 
     public String getCellClass() {
         return cellClass;
     }
 
-    public void setCellClass(String cellClass) {
+    public Column<T> setCellClass(String cellClass) {
         this.cellClass = cellClass;
+        return this;
     }
 
     public Integer getWidth() {
         return width;
     }
 
-    public void setWidth(Integer width) {
+    public Column<T> setWidth(Integer width) {
         this.width = width;
+        return this;
     }
 
     public String getCellRenderer() {
@@ -142,8 +138,9 @@ public class Column<T> extends AbstractColumn<T, Column<T>> {
         return sortingEnabled;
     }
 
-    public void setSortingEnabled(boolean sortingEnabled) {
+    public Column<T> setSortingEnabled(boolean sortingEnabled) {
         this.sortingEnabled = sortingEnabled;
+        return this;
     }
 
     public SerializableComparator<T> getComparator(
@@ -175,24 +172,22 @@ public class Column<T> extends AbstractColumn<T, Column<T>> {
         return valueProvider;
     }
 
-    public void setValueProvider(ValueProvider<T, ?> valueProvider) {
+    public Column<T> setValueProvider(ValueProvider<T, ?> valueProvider) {
         this.valueProvider = valueProvider;
-    }
-
-    public SerializableFunction<T, String> getClassNameGenerator() {
-        return classNameGenerator;
-    }
-
-    public void setClassNameGenerator(SerializableFunction<T, String> classNameGenerator) {
-        this.classNameGenerator = classNameGenerator;
+        return this;
     }
 
     public DataGenerator<T> getDataGenerator() {
         return dataGenerator;
     }
 
-    public void setCellClassRules(String cellClass, String cellClassRules) {
+    /**
+     * set a css class name if the rule applies
+     * See https://www.ag-grid.com/javascript-grid-cell-styles/#cell-style-cell-class-cell-class-rules-params
+     */
+    public Column<T> setCellClassRules(String cellClass, String cellClassRules) {
         this.cellClassRules.put(cellClass, cellClassRules);
+        return this;
     }
 
     public Map<String, String> getCellClassRules() {
@@ -224,15 +219,6 @@ public class Column<T> extends AbstractColumn<T, Column<T>> {
 
     public Boolean getEditable() {
         return editable;
-    }
-
-    public Setter<T, String> getSetter() {
-        return setter;
-    }
-
-    public Column<T> setSetter(Setter<T, String> setter) {
-        this.setter = setter;
-        return this;
     }
 
     public String getCellRendererFramework() {

@@ -37,6 +37,8 @@ public abstract class AbstractColumn<T, ColumnType> {
         }
     }
 
+    private int flex = 0;
+
     @JsonProperty("headerName")
     private String header;
 
@@ -107,6 +109,15 @@ public abstract class AbstractColumn<T, ColumnType> {
 
     public ColumnType setCheckboxSelection(boolean checkboxSelection) {
         this.checkboxSelection = checkboxSelection;
+        return (ColumnType) this;
+    }
+
+    public int getFlex() {
+        return flex;
+    }
+
+    public ColumnType setFlex(int flex) {
+        this.flex = flex;
         return (ColumnType) this;
     }
 }

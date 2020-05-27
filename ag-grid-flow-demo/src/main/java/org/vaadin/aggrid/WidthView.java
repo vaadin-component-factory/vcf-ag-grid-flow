@@ -9,11 +9,11 @@ import org.vaadin.aggrid.bean.PersonUtil;
 /**
  * @author jcgueriaud
  */
-@Route(value = "simple", layout = MainLayout.class)
-public class SimpleView extends Div {
+@Route(value = "width", layout = MainLayout.class)
+public class WidthView extends Div {
 
 
-    public SimpleView() {
+    public WidthView() {
         setSizeFull();
         AgGrid<Person> grid = buildGrid();
         grid.refreshColumnDefs();
@@ -25,14 +25,15 @@ public class SimpleView extends Div {
         AgGrid<Person> grid = new AgGrid<>();
         grid.setSizeFull();
         grid.addColumn("id",Person::getId)
-                .setFrozen(true)
-                .setHeader("Id")
+                .setWidth(228)
+                .setHeader("Id (228px)")
                 .setSortable(true);
         grid.addColumn("firstname",Person::getFirstName)
                 .setHeader("FirstName")
                 .setSortable(true);
         grid.addColumn("lastname",Person::getLastName)
-                .setHeader("LastName")
+                .setAutoWidth(true)
+                .setHeader("LastName Auto Width")
                 .setSortable(true);
         return grid;
     }
