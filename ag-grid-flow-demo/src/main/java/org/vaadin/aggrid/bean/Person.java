@@ -1,4 +1,4 @@
-package org.vaadin.aggrid;
+package org.vaadin.aggrid.bean;
 
 import java.util.Objects;
 

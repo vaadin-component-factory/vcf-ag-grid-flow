@@ -1,4 +1,3 @@
-
 if (typeof window.Vaadin.Flow.agGridRenderers === 'undefined') {
 
     window.Vaadin.Flow.agGridRenderers = [];

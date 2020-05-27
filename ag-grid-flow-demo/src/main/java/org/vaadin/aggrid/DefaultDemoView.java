@@ -6,6 +6,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
+import org.vaadin.aggrid.bean.Person;
+import org.vaadin.aggrid.bean.Price;
 
 import java.util.ArrayList;
 import java.util.List;
