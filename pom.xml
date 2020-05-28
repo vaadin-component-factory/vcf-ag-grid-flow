@@ -3,7 +3,7 @@
 
     <groupId>org.vaadin.componentfactory</groupId>
     <artifactId>ag-grid-flow-root</artifactId>
-    <version>0.4.0</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>ag-grid-flow</module>
@@ -14,7 +14,7 @@
     
     <properties>
         <vaadin.version>14.2.0</vaadin.version>
-        <ag-grid-flow.version>0.4.0</ag-grid-flow.version>
+        <ag-grid-flow.version>1.0.0</ag-grid-flow.version>
         <jackson.version>2.11.0</jackson.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>

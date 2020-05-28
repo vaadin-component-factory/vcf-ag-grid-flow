@@ -9,7 +9,7 @@ import org.vaadin.aggrid.bean.PersonUtil;
 /**
  * @author jcgueriaud
  */
-@Route(value = "simple", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 public class SimpleView extends Div {
 
 

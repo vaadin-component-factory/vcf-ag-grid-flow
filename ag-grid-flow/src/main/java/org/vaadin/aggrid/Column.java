@@ -31,9 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * @author jcgueriaud
- */
 public class Column<T> extends AbstractColumn<T, Column<T>> {
 
     private static final Logger log = LoggerFactory.getLogger(Column.class);
@@ -181,9 +178,14 @@ public class Column<T> extends AbstractColumn<T, Column<T>> {
         return dataGenerator;
     }
 
+
     /**
      * set a css class name if the rule applies
      * See https://www.ag-grid.com/javascript-grid-cell-styles/#cell-style-cell-class-cell-class-rules-params
+     *
+     * @param cellClass css class name
+     * @param cellClassRules rule
+     * @return the current column
      */
     public Column<T> setCellClassRules(String cellClass, String cellClassRules) {
         this.cellClassRules.put(cellClass, cellClassRules);
@@ -207,8 +209,6 @@ public class Column<T> extends AbstractColumn<T, Column<T>> {
         return cellEditor;
     }
 
-    //* TODO JCG Requires a Setter to set the value on the server side
-    // when the cell value has been edited **/
     public Column<T> setCellEditor(String cellEditor) {
         this.cellEditor = cellEditor;
         if (cellEditor != null) {

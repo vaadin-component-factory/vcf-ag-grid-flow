@@ -28,6 +28,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.provider.DataProvider;
+import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
@@ -52,6 +53,11 @@ import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Wrapper for ag-grid javascript component
+ *
+ * @param <T> the grid bean type
+ */
 @NpmPackage(value = "@ag-grid-community/core",version = "23.1.0")
 @NpmPackage(value = "@ag-grid-community/polymer",version = "23.1.0")
 @NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "23.1.0")
@@ -67,7 +73,12 @@ public class AgGrid<T> extends Div {
     private JreJsonFactory jsonFactory;
     private ObjectMapper objectMapper = new ObjectMapper();
     private ComponentEventListener<ItemClickEvent<T>> itemClickEventComponentEventListener;
+    private DataProvider<T, ?> dataProvider;
+    private List<QuerySortOrder> sortOrders;
 
+    /**
+     *
+     */
     public AgGrid() {
         setWidthFull();
         initConnector();
@@ -83,8 +94,6 @@ public class AgGrid<T> extends Div {
         getElement().getNode().runWhenAttached(ui -> ui
                 .beforeClientResponse(this, context -> command.accept(ui)));
     }
-
-    private DataProvider<T, ?> dataProvider;
 
     public void setDataProvider(DataProvider<T, ?> dataProvider) {
         this.dataProvider = dataProvider;
@@ -110,14 +119,15 @@ public class AgGrid<T> extends Div {
             }
         }
 
-        List<QuerySortOrder> sortOrders = querySortOrderBuilder.build();
+        sortOrders = querySortOrderBuilder.build();
         Stream<T> fetch = dataProvider.fetch(new Query<>(startRow, requestedPageSize, sortOrders, createSortingComparator(sortOrders), null));
 
-        // todo jcg the size of the dataprovider is called foreach page request
         // should be avoided if it's not a ListDataProvider
-        int rowCount = dataProvider.size(new Query<>(startRow, requestedPageSize, sortOrders, createSortingComparator(sortOrders), null));
-        runBeforeClientResponse(ui -> getElement()
-                .callJsFunction("$connector.setRowCount", rowCount));
+        if (dataProvider instanceof ListDataProvider) {
+            int rowCount = dataProvider.size(new Query<>(startRow, requestedPageSize, sortOrders, createSortingComparator(sortOrders), null));
+            runBeforeClientResponse(ui -> getElement()
+                    .callJsFunction("$connector.setRowCount", rowCount));
+        }
         List<T> page = fetch.collect(Collectors.toList());
         // lastRow is boolean - isMaxRowFound
         final int lastRow = (page.size() < requestedPageSize)?startRow + page.size():-1;
@@ -236,10 +246,7 @@ public class AgGrid<T> extends Div {
         return null;
     }
 
-    /**
-     * From the grid
-     */
-
+    // From the grid
     protected static int compareMaybeComparables(Object a, Object b) {
         if (hasCommonComparableBaseType(a, b)) {
             return compareComparables(a, b);
@@ -276,7 +283,13 @@ public class AgGrid<T> extends Div {
                 .compare(a, b);
     }
 
-    /// click item listener ///
+    /**
+     * Adds an item click listener to this component.
+     *
+     * @param listener
+     *            the listener to add, not <code>null</code>
+     *
+     */
     public void addItemClickListener(
             ComponentEventListener<ItemClickEvent<T>> listener) {
         itemClickEventComponentEventListener = listener;
@@ -305,11 +318,11 @@ public class AgGrid<T> extends Div {
     }
 
     private Stream<T> fetchRowItemFromRowIndex(int rowIndex) {
-        log.warn("fetchRowItemFromRowIndex does not managed the sort and filter");
-        return dataProvider.fetch(new Query<>(rowIndex, 1, null, null, null));
+        log.warn("fetchRowItemFromRowIndex does not managed filter");
+        return dataProvider.fetch(new Query<>(rowIndex, 1, sortOrders, createSortingComparator(sortOrders), null));
     }
     //// Selection mode ////
-    public enum SelectionMode {
+ /*   public enum SelectionMode {
         SINGLE("single"),
         MULTI("multiple"),
         NONE(null);
@@ -348,7 +361,7 @@ public class AgGrid<T> extends Div {
     private void rowSelected() {
         log.warn("rowSelected");
     }
-
+*/
     @ClientCallable
     private void cellRendererFrameworkCallback(String colId, int rowIndex, String action) {
         Stream<T> fetch = fetchRowItemFromRowIndex(rowIndex);
@@ -358,7 +371,15 @@ public class AgGrid<T> extends Div {
     }
 
 
-    public void scrollTo(int rowIndex) {
+    /**
+     * Scrolls to the given row index. Scrolls so that the row is shown at the
+     * start of the visible area whenever possible.
+     *
+     *
+     * @param rowIndex
+     *            zero based index of the item to scroll to in the current view.
+     */
+    public void scrollToIndex(int rowIndex) {
         runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.scrollTo", rowIndex));
     }
