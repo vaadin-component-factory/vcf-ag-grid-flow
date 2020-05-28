@@ -6,7 +6,6 @@ import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.Route;
@@ -67,11 +66,6 @@ public class LitComponentRendererView extends Div {
                 .setCellRendererFramework("icon-lit-renderer")
                 .setSortable(true);
         return grid;
-    }
-
-
-    private void currencyClicked(Person person) {
-        Notification.show("Person clicked "+ person.toString());
     }
 
 }

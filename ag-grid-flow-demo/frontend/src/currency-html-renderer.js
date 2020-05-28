@@ -42,9 +42,9 @@ CurrencyHtmlRenderer.prototype.getGui = function() {
 // gets called whenever the user gets the cell to refresh
 CurrencyHtmlRenderer.prototype.refresh = function(params) {
     // set value into cell again
-    //this.eValue.innerHTML = params.valueFormatted ? params.valueFormatted : params.value;
+    this.eValue.innerHTML = params.valueFormatted ? params.valueFormatted : params.value;
     // return true to tell the grid we refreshed successfully
-    return false;
+    return true;
 };
 
 // gets called when the cell is removed from the grid

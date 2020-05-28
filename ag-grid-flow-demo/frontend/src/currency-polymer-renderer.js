@@ -12,7 +12,6 @@ class CurrencyPolymerRenderer extends PolymerElement {
         if (typeof params.value  === 'undefined') {
 
         } else {
-            // todo jcg rowId, colId, action name
             this.currency = this.params.value.currency;
             this.value = this.params.value.price;
         }
