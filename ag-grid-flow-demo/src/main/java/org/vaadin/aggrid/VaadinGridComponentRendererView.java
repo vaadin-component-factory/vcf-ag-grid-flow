@@ -22,7 +22,7 @@ import org.vaadin.aggrid.bean.PersonUtil;
  *  </ul>
  * </p>
  *
- *  <p>On chrome: (tests are done in dev mode + inspector opened)
+ *  <p>On chrome: (tests are done in dev mode + inspector opened). The size of the view is also really important
  *  <ol>
  *  <li>ag-grid + only text-renderer: 1100ms</li>
  *  <li>ag-grid + lit-renderer: 1600ms</li>

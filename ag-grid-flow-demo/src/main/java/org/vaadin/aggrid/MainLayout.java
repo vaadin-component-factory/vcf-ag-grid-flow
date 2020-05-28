@@ -25,6 +25,7 @@ public class MainLayout extends AppLayout {
         menuLayout.add(new RouterLink("Polymer Component Renderer", PolymerComponentRendererView.class));
         menuLayout.add(new RouterLink("Vaadin Template Renderer", VaadinGridTemplateRendererView.class));
         menuLayout.add(new RouterLink("Vaadin Component Renderer", VaadinGridComponentRendererView.class));
+        menuLayout.add(new RouterLink("Callback DataProvider", CallbackDataProviderView.class));
         addToDrawer(menuLayout);
         addToNavbar(drawerToggle);
     }

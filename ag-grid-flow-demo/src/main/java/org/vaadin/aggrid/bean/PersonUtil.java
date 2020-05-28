@@ -9,13 +9,16 @@ import java.util.Random;
  */
 public class PersonUtil {
 
-
-    public static List<Person> buildPersons() {
+    public static List<Person> buildPersons(int offset, int size) {
         List<Person> persons = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            persons.add(generateRandom(i));
+        for (int i = 0; i < size; i++) {
+            persons.add(generateRandom(offset + i));
         }
         return persons;
+    }
+
+    public static List<Person> buildPersons() {
+        return buildPersons(0,1000);
     }
 
     public static Person generateRandom(int id) {

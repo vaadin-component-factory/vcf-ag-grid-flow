@@ -123,6 +123,12 @@ public class AgGrid<T> extends Div {
         final int lastRow = (page.size() < requestedPageSize)?startRow + page.size():-1;
         runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.setCurrentClientPage", convertListToJsonArray(page), lastRow, startRow));
+        /* For Vaadin 14.2
+        JsonObject jsonObject = Json.createObject();
+        jsonObject.put("lastRow", lastRow);
+        jsonObject.put("startRow", startRow);
+        jsonObject.put("page", convertListToJsonArray(page));
+        return jsonObject;*/
 
     }
 

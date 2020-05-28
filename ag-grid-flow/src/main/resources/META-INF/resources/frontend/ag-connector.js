@@ -85,6 +85,11 @@ window.Vaadin.Flow.agGridConnector = {
                     getRows: function (params) {
                         // debugger;
                         console.log('ag-grid - getRows for {} to {} ', params.startRow, params.endRow);
+                        /*
+                        In vaadin 14.2, not yet implemented as 14.2 is brand new
+                        let requestClientPagePromise = c.$server.requestClientPage(params.startRow, params.endRow, params.sortModel, params.filterModel);;
+                        requestClientPagePromise.then(requestClientPage => params.successCallback(requestClientPage.page, requestClientPage.lastRow));
+                         */
                         c.$server.requestClientPage(params.startRow, params.endRow, params.sortModel, params.filterModel);
                         c.$connector.currentPageParams[params.startRow] = params;
                     }
