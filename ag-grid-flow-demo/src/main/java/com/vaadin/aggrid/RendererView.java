@@ -1,12 +1,12 @@
-package org.vaadin.aggrid;
+package com.vaadin.aggrid;
 
+import com.vaadin.aggrid.bean.Person;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.Route;
-import org.vaadin.aggrid.bean.Person;
-import org.vaadin.aggrid.bean.PersonUtil;
+import com.vaadin.aggrid.bean.PersonUtil;
 
 /**
  * Here is an example of different renderers for cells

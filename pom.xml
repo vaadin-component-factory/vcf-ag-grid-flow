@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.componentfactory</groupId>
+    <groupId>com.vaadin.componentfactory</groupId>
     <artifactId>ag-grid-flow-root</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
     <modules>
         <module>ag-grid-flow</module>
@@ -13,8 +13,7 @@
     <description>AG Grid for Flow</description>
     
     <properties>
-        <vaadin.version>14.2.0</vaadin.version>
-        <ag-grid-flow.version>1.0.0</ag-grid-flow.version>
+        <vaadin.version>14.3.2</vaadin.version>
         <jackson.version>2.11.0</jackson.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -35,11 +34,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>ag-grid-flow</artifactId>
-                <version>${ag-grid-flow.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>

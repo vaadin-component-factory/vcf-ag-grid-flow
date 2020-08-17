@@ -1,4 +1,4 @@
-package org.vaadin.aggrid;
+package com.vaadin.aggrid;
 
 /*
  * #%L

@@ -1,4 +1,4 @@
-package org.vaadin.aggrid;
+package com.vaadin.aggrid;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;

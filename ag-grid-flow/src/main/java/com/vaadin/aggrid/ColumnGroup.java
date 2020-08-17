@@ -1,4 +1,4 @@
-package org.vaadin.aggrid;
+package com.vaadin.aggrid;
 
 /*
  * #%L
@@ -22,8 +22,6 @@ import com.vaadin.flow.function.ValueProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.vaadin.aggrid.AgGrid.compareMaybeComparables;
-
 /**
  * @author jcgueriaud
  */
@@ -35,7 +33,7 @@ public class ColumnGroup<T> extends AbstractColumn<T, ColumnGroup<T>> {
         Column<T> column = new Column<>(key, valueProvider);
         children.add(column);
 
-        column.setComparator(((a, b) -> compareMaybeComparables(
+        column.setComparator(((a, b) -> AgGrid.compareMaybeComparables(
                 valueProvider.apply(a), valueProvider.apply(b))));
         return column;
     }

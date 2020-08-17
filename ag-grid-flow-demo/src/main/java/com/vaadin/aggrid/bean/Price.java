@@ -1,4 +1,4 @@
-package org.vaadin.aggrid.bean;
+package com.vaadin.aggrid.bean;
 
 /**
  * @author jcgueriaud
