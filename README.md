@@ -30,8 +30,6 @@ Here is a list of **not implemented** features:
 
 ## Licence
 
-This component is part of Vaadin Prime. Still, open source you need to have a valid CVAL license in order to use it. Read more at: [vaadin.com/pricing](https://vaadin.com/pricing)
-
 The community version of Ag grid is used in this add-on.
 You can read the details for the licensing [here](https://www.ag-grid.com/license-pricing.php)
 
@@ -53,6 +51,3 @@ Go to ag-grid-flow-demo and run:
 ```
 mvn jetty:run -Dvaadin.devmode.transpile=true 
 ```
-## Examples
-
-TODO
