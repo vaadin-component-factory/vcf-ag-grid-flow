@@ -59,19 +59,19 @@ window.Vaadin.Flow.agGridConnector = {
                 // transform the configuration (name of the attribute cellRenderer)
                 // to a javascript function
                 columnDefs.forEach(el => { if (el.cellRenderer != null) {
-                    console.log("ag-grid - cellRenderer {} ", el.cellRenderer);
+                    //console.log("ag-grid - cellRenderer {} ", el.cellRenderer);
                     el.cellRenderer = window.Vaadin.Flow.agGridRenderers[el.cellRenderer];
                     el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
-                        console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                        //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
                         c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
                     };
                 }});
                 // register the framework renderer polymer or lit
                 // add cellRendererFrameworkCallback in the column configuration to call actions
                 columnDefs.forEach(el => { if (el.cellRendererFramework != null) {
-                    console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                    //console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
                     el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
-                        console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                        //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
                         c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
                     };
                 }});
@@ -79,7 +79,6 @@ window.Vaadin.Flow.agGridConnector = {
                 this.agGrid.gridOptions.api.setColumnDefs(columnDefs);
             },
             setSelectionMode : function(rowSelection) {
-                //debugger;
                 this.agGrid.gridOptions.rowSelection = rowSelection;
                 this.agGrid.gridOptions.api.addEventListener('selectionChanged', function selectionChangedHandler(event) {
                     c.$server.selectionChanged();
@@ -102,27 +101,17 @@ window.Vaadin.Flow.agGridConnector = {
                 var dataSource = {
                     rowCount: null, // behave as infinite scroll
                     getRows: function (params) {
-                        // debugger;
-                        console.log('ag-grid - getRows for {} to {} ', params.startRow, params.endRow);
-                        /*
-                        In vaadin 14.2, not yet implemented as 14.2 is brand new
-                        let requestClientPagePromise = c.$server.requestClientPage(params.startRow, params.endRow, params.sortModel, params.filterModel);;
+                        let requestClientPagePromise = c.$server.requestClientPage(params.startRow, params.endRow, params.sortModel, params.filterModel);
                         requestClientPagePromise.then(requestClientPage => params.successCallback(requestClientPage.page, requestClientPage.lastRow));
-                         */
-                        c.$server.requestClientPage(params.startRow, params.endRow, params.sortModel, params.filterModel);
-                        c.$connector.currentPageParams[params.startRow] = params;
                     }
                 };
 
                 this.agGrid.gridOptions.api.setDatasource(dataSource);
             },
 
-            setCurrentClientPage : function(rowsThisPage, lastRow, startRow) {
-                if (c.$connector.currentPageParams[startRow] != null) {
-                    c.$connector.currentPageParams[startRow].successCallback(rowsThisPage, lastRow);
-                    c.$connector.currentPageParams[startRow] = null;
-                }
-            },
+            refreshAll: function() {
+                this.agGrid.gridOptions.api.refreshInfiniteCache();
+            }
 
         };
         // let the grid know which columns and what data to use

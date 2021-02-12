@@ -39,6 +39,7 @@ import com.vaadin.flow.function.SerializableComparator;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.internal.ReflectTools;
+import com.vaadin.flow.shared.Registration;
 import elemental.json.Json;
 import elemental.json.JsonArray;
 import elemental.json.JsonObject;
@@ -72,6 +73,7 @@ public class AgGrid<T> extends Div {
     private static final Logger log = LoggerFactory.getLogger(AgGrid.class);
 
     private final List<AbstractColumn<T, ?>> columnsDefs = new ArrayList<>();
+    private Registration dataProviderRegistration;
 
     private JreJsonFactory jsonFactory;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -100,12 +102,21 @@ public class AgGrid<T> extends Div {
 
     public void setDataProvider(DataProvider<T, ?> dataProvider) {
         this.dataProvider = dataProvider;
+        // remove the previous listener
+        if (dataProviderRegistration != null) {
+            dataProviderRegistration.remove();
+        }
+        dataProviderRegistration = dataProvider.addDataProviderListener(event -> {
+            // remove the data if refreshAll is called
+            runBeforeClientResponse(ui -> getElement()
+                .callJsFunction("$connector.refreshAll"));
+        });
         runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.setDataSource"));
     }
 
     @ClientCallable
-    public void requestClientPage(int startRow, int endRow, JsonArray sortModel, JsonObject filterModel) {
+    public JsonObject requestClientPage(int startRow, int endRow, JsonArray sortModel, JsonObject filterModel) {
         log.debug("requestClientPage {}, {}", startRow, endRow);
         int requestedPageSize = endRow - startRow;
         QuerySortOrderBuilder querySortOrderBuilder = new QuerySortOrderBuilder();
@@ -134,20 +145,17 @@ public class AgGrid<T> extends Div {
         List<T> page = fetch.collect(Collectors.toList());
         // lastRow is boolean - isMaxRowFound
         final int lastRow = (page.size() < requestedPageSize)?startRow + page.size():-1;
-        runBeforeClientResponse(ui -> getElement()
-                .callJsFunction("$connector.setCurrentClientPage", convertListToJsonArray(page), lastRow, startRow));
-        /* For Vaadin 14.2
         JsonObject jsonObject = Json.createObject();
         jsonObject.put("lastRow", lastRow);
         jsonObject.put("startRow", startRow);
         jsonObject.put("page", convertListToJsonArray(page));
-        return jsonObject;*/
+        return jsonObject;
 
     }
 
     protected SerializableComparator<T> createSortingComparator(List<QuerySortOrder> sortOrders) {
         BinaryOperator<SerializableComparator<T>> operator = (comparator1, comparator2) -> {
-            Comparator var10000 = comparator1.thenComparing(comparator2);
+            Comparator<T> var10000 = comparator1.thenComparing(comparator2);
             return var10000::compare;
         };
         return sortOrders.stream().map((order) -> {
