@@ -3,7 +3,7 @@ package com.vaadin.aggrid;
 import com.vaadin.aggrid.bean.Person;
 import com.vaadin.aggrid.bean.PersonUtil;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.Route;
@@ -16,7 +16,7 @@ import static com.vaadin.aggrid.bean.PersonUtil.generateRandom;
  * @author jcgueriaud
  */
 @Route(value = "refresh", layout = MainLayout.class)
-public class RefreshView extends Div {
+public class RefreshView extends VerticalLayout {
 
     private int id = 6666;
 
@@ -32,12 +32,12 @@ public class RefreshView extends Div {
             items.add(generateRandom(id));
             dataProvider.refreshAll();
         }));
-        add(grid);
+        addAndExpand(grid);
     }
 
     private AgGrid<Person> buildGrid() {
         AgGrid<Person> grid = new AgGrid<>();
-        grid.setSizeFull();
+        grid.setWidthFull();
         grid.addColumn("id",Person::getId)
                 .setFrozen(true)
                 .setHeader("Id")

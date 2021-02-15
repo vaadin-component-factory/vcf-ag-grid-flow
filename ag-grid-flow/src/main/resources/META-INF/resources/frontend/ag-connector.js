@@ -68,13 +68,15 @@ window.Vaadin.Flow.agGridConnector = {
                 }});
                 // register the framework renderer polymer or lit
                 // add cellRendererFrameworkCallback in the column configuration to call actions
-                columnDefs.forEach(el => { if (el.cellRendererFramework != null) {
-                    //console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
-                    el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
-                        //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
-                        c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
-                    };
-                }});
+                columnDefs.forEach(el => {
+                    if (el.cellRendererFramework != null) {
+                        //console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                        el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
+                            //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                            c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
+                        };
+                    }
+                });
 
                 this.agGrid.gridOptions.api.setColumnDefs(columnDefs);
             },
@@ -120,7 +122,7 @@ window.Vaadin.Flow.agGridConnector = {
             //cacheBlockSize: 30,
             // no impact on the client side
             //animateRows: true,
-            // todo jcg by default its 100, no performance changes on the client side
+            // by default its 100, no performance changes on the client side
            /* cacheBlockSize: 1000,*/
         };
 

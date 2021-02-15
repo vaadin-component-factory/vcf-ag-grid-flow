@@ -22,8 +22,10 @@ package com.vaadin.aggrid;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
@@ -62,9 +64,9 @@ import java.util.stream.Stream;
  *
  * @param <T> the grid bean type
  */
-@NpmPackage(value = "@ag-grid-community/core",version = "23.1.0")
-@NpmPackage(value = "@ag-grid-community/polymer",version = "23.1.0")
-@NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "23.1.0")
+@NpmPackage(value = "@ag-grid-community/core",version = "25.0.1")
+@NpmPackage(value = "@ag-grid-community/polymer",version = "25.0.0")
+@NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "25.0.1")
 @JsModule("./ag-connector.js")
 @CssImport("@ag-grid-community/core/dist/styles/ag-theme-alpine.min.css")
 @CssImport("@ag-grid-community/core/dist/styles/ag-grid.min.css")
@@ -73,7 +75,7 @@ public class AgGrid<T> extends Div {
     private static final Logger log = LoggerFactory.getLogger(AgGrid.class);
 
     private final List<AbstractColumn<T, ?>> columnsDefs = new ArrayList<>();
-    private Registration dataProviderRegistration;
+    private Registration dataProviderListener;
 
     private JreJsonFactory jsonFactory;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -100,19 +102,43 @@ public class AgGrid<T> extends Div {
                 .beforeClientResponse(this, context -> command.accept(ui)));
     }
 
+    public DataProvider<T, ?> getDataProvider() {
+        return dataProvider;
+    }
+
     public void setDataProvider(DataProvider<T, ?> dataProvider) {
         this.dataProvider = dataProvider;
-        // remove the previous listener
-        if (dataProviderRegistration != null) {
-            dataProviderRegistration.remove();
+        runBeforeClientResponse(ui -> getElement()
+                .callJsFunction("$connector.setDataSource"));
+        setupDataProviderListener(dataProvider);
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        super.onAttach(attachEvent);
+        DataProvider<T, ?> dataProvider = getDataProvider();
+        if (dataProvider != null && dataProviderListener == null) {
+            setupDataProviderListener(dataProvider);
         }
-        dataProviderRegistration = dataProvider.addDataProviderListener(event -> {
-            // remove the data if refreshAll is called
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        if (dataProviderListener != null) {
+            dataProviderListener.remove();
+            dataProviderListener = null;
+        }
+        super.onDetach(detachEvent);
+    }
+
+    private <C> void setupDataProviderListener(DataProvider<T, C> dataProvider) {
+        if (dataProviderListener != null) {
+            dataProviderListener.remove();
+        }
+        dataProviderListener = dataProvider.addDataProviderListener(e -> {
             runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.refreshAll"));
         });
-        runBeforeClientResponse(ui -> getElement()
-                .callJsFunction("$connector.setDataSource"));
     }
 
     @ClientCallable
