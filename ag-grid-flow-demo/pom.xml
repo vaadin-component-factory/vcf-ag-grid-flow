@@ -6,7 +6,7 @@
 
     <groupId>com.vaadin.componentfactory</groupId>
     <artifactId>ag-grid-flow-demo</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 
     <name>AG Grid Demo</name>
     <packaging>war</packaging>
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>com.vaadin.componentfactory</groupId>
             <artifactId>ag-grid-flow</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.vaadin/flow-component-demo-helpers -->
         <dependency>

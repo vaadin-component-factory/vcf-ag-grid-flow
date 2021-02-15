@@ -26,6 +26,8 @@ public class MainLayout extends AppLayout {
         menuLayout.add(new RouterLink("Vaadin Template Renderer", VaadinGridTemplateRendererView.class));
         menuLayout.add(new RouterLink("Vaadin Component Renderer", VaadinGridComponentRendererView.class));
         menuLayout.add(new RouterLink("Callback DataProvider", CallbackDataProviderView.class));
+        menuLayout.add(new RouterLink("300 Columns", AgGrid300ColumnsView.class));
+        menuLayout.add(new RouterLink("Vaadin 300 Columns", Vaadin300ColumnsView.class));
         addToDrawer(menuLayout);
         addToNavbar(drawerToggle);
     }
