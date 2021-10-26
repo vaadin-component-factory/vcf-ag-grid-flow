@@ -78,6 +78,19 @@ window.Vaadin.Flow.agGridConnector = {
                     }
                 });
 
+                const parseCellRendererFramework = (el) => {
+                    if (el.children && el.children.length > 0) {
+                        el.children.forEach(el => parseCellRendererFramework(el));
+                    } else if (el.cellRendererFramework != null) {
+                        // console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                        el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
+                            //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                            c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
+                        };
+                    }
+                }
+                columnDefs.forEach(el => parseCellRendererFramework(el));
+
                 this.agGrid.gridOptions.api.setColumnDefs(columnDefs);
             },
             setSelectionMode : function(rowSelection) {
