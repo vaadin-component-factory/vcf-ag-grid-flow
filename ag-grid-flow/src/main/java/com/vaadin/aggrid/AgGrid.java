@@ -64,9 +64,9 @@ import java.util.stream.Stream;
  *
  * @param <T> the grid bean type
  */
-@NpmPackage(value = "@ag-grid-community/core",version = "25.0.1")
-@NpmPackage(value = "@ag-grid-community/polymer",version = "25.0.0")
-@NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "25.0.1")
+@NpmPackage(value = "@ag-grid-community/core",version = "26.1.0")
+@NpmPackage(value = "@ag-grid-community/polymer",version = "26.1.0")
+@NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "26.1.0")
 @JsModule("./ag-connector.js")
 @CssImport("@ag-grid-community/core/dist/styles/ag-theme-alpine.min.css")
 @CssImport("@ag-grid-community/core/dist/styles/ag-grid.min.css")
