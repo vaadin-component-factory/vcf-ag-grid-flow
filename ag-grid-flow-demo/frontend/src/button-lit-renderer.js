@@ -1,5 +1,5 @@
-import { LitElement, html } from 'lit-element';
-import '@vaadin/vaadin-button';
+import { LitElement, html } from 'lit';
+import '@vaadin/button';
 
 class ButtonLitRenderer extends LitElement {
     static get properties() {

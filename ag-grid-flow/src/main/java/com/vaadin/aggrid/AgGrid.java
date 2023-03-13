@@ -20,41 +20,27 @@ package com.vaadin.aggrid;
  * #L%
  */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.ClientCallable;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.DetachEvent;
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.data.provider.DataProvider;
-import com.vaadin.flow.data.provider.ListDataProvider;
-import com.vaadin.flow.data.provider.Query;
-import com.vaadin.flow.data.provider.QuerySortOrder;
-import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
+import com.vaadin.flow.data.provider.*;
 import com.vaadin.flow.function.SerializableComparator;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.function.ValueProvider;
+import com.vaadin.flow.internal.JsonUtils;
 import com.vaadin.flow.internal.ReflectTools;
 import com.vaadin.flow.shared.Registration;
 import elemental.json.Json;
 import elemental.json.JsonArray;
 import elemental.json.JsonObject;
 import elemental.json.JsonValue;
-import elemental.json.impl.JreJsonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -64,21 +50,19 @@ import java.util.stream.Stream;
  *
  * @param <T> the grid bean type
  */
-@NpmPackage(value = "@ag-grid-community/core",version = "26.1.0")
-@NpmPackage(value = "@ag-grid-community/polymer",version = "26.1.0")
-@NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "26.1.0")
+@NpmPackage(value = "@ag-grid-community/styles",version = "29.1.0")
+@NpmPackage(value = "@ag-grid-community/core",version = "29.1.0")
+@NpmPackage(value = "@ag-grid-community/polymer",version = "26.2.2")
+@NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "29.1.0")
 @JsModule("./ag-connector.js")
-@CssImport("@ag-grid-community/core/dist/styles/ag-theme-alpine.min.css")
-@CssImport("@ag-grid-community/core/dist/styles/ag-grid.min.css")
+@CssImport("@ag-grid-community/styles/ag-grid.min.css")
+@CssImport("@ag-grid-community/styles/ag-theme-alpine.min.css")
 public class AgGrid<T> extends Div {
 
     private static final Logger log = LoggerFactory.getLogger(AgGrid.class);
 
     private final List<AbstractColumn<T, ?>> columnsDefs = new ArrayList<>();
     private Registration dataProviderListener;
-
-    private JreJsonFactory jsonFactory;
-    private ObjectMapper objectMapper = new ObjectMapper();
     private ComponentEventListener<ItemClickEvent<T>> itemClickEventComponentEventListener;
     private DataProvider<T, ?> dataProvider;
     private List<QuerySortOrder> sortOrders;
@@ -254,24 +238,9 @@ public class AgGrid<T> extends Div {
         return column;
     }
 
-
-    private JreJsonFactory getJsonFactory() {
-        if (jsonFactory == null) {
-            jsonFactory = new JreJsonFactory();
-        }
-
-        return jsonFactory;
-    }
-
     public void refreshColumnDefs() {
-        try {
-            JsonValue jsonValue = getJsonFactory().parse(objectMapper.writeValueAsString(columnsDefs));
-
-            runBeforeClientResponse(ui -> getElement()
-                    .callJsFunction("$connector.setColumnDefs", jsonValue));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        runBeforeClientResponse(ui -> getElement()
+                .callJsFunction("$connector.setColumnDefs", JsonUtils.listToJson(columnsDefs)));
     }
 
     private Column<T> getColumnByKey(String columnId) {

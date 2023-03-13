@@ -1,10 +1,11 @@
 package com.vaadin.aggrid;
 
+import com.vaadin.aggrid.bean.Person;
+import com.vaadin.aggrid.bean.PersonUtil;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.Route;
-import com.vaadin.aggrid.bean.Person;
-import com.vaadin.aggrid.bean.PersonUtil;
 
 /**
  * @author jcgueriaud

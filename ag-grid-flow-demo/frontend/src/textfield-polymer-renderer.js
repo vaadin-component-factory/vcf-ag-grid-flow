@@ -1,5 +1,5 @@
 import {html, PolymerElement} from "@polymer/polymer/polymer-element.js";
-import '@vaadin/vaadin-text-field';
+import '@vaadin/text-field';
 
 class TextfieldPolymerRenderer extends PolymerElement {
     static get template() {

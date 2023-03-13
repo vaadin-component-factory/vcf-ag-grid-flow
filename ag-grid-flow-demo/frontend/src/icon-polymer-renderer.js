@@ -1,10 +1,11 @@
 import {html, PolymerElement} from "@polymer/polymer/polymer-element.js";
-import '@vaadin/vaadin-icons';
-import '@polymer/iron-icon';
+import '@vaadin/icon';
+import '@vaadin/vaadin-lumo-styles/vaadin-iconset.js';
+import '@vaadin/icons';
 
 class IconPolymerRenderer extends PolymerElement {
     static get template() {
-        return html`<iron-icon icon='[[value]]'></iron-icon>`;
+        return html`<vaadin-icon icon='[[value]]'></vaadin-icon>`;
     }
 
     agInit(params) {

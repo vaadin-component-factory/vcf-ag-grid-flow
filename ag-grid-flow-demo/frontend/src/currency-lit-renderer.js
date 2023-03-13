@@ -1,4 +1,4 @@
-import { LitElement, html as html } from 'lit-element';
+import { LitElement, html as html } from 'lit';
 
 class CurrencyLitRenderer extends LitElement {
     static get properties() {

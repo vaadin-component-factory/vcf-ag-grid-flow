@@ -1,6 +1,7 @@
-import { LitElement, html } from 'lit-element';
-import '@vaadin/vaadin-icons';
-import '@polymer/iron-icon';
+import { LitElement, html } from 'lit';
+import '@vaadin/icon';
+import '@vaadin/vaadin-lumo-styles/vaadin-iconset.js';
+import '@vaadin/icons';
 
 class IconLitRenderer extends LitElement {
     static get properties() {
@@ -21,7 +22,7 @@ class IconLitRenderer extends LitElement {
         }
     }
     render() {
-        return html`<iron-icon icon=${this.value}></iron-icon>`;
+        return html`<vaadin-icon icon=${this.value}></vaadin-icon>`;
     }
 }
 

@@ -1,5 +1,5 @@
 import {html, PolymerElement} from "@polymer/polymer/polymer-element.js";
-import '@vaadin/vaadin-button';
+import '@vaadin/button';
 
 class ButtonPolymerRenderer extends PolymerElement {
     static get template() {

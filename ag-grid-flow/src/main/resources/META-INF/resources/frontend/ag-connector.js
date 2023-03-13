@@ -18,9 +18,13 @@
  * #L%
  */
 import {InfiniteRowModelModule} from '@ag-grid-community/infinite-row-model';
-import { Grid } from '@ag-grid-community/core';
+import { Grid, VanillaFrameworkOverrides } from '@ag-grid-community/core';
 
 import PolymerFrameworkComponentWrapper from "@ag-grid-community/polymer/src/PolymerFrameworkComponentWrapper.js";
+
+import PolymerComponentFactory from "@ag-grid-community/polymer/src/PolymerComponentFactory.js";
+import PolymerFrameworkFactory from "@ag-grid-community/polymer/src/PolymerFrameworkFactory.js";
+
 
 /**
  * list to register html renderers
@@ -56,13 +60,15 @@ window.Vaadin.Flow.agGridConnector = {
                 });
             },
             setColumnDefs : function(columnDefs) {
+                console.log("columnDefs {} ", columnDefs);
+                debugger;
                 // transform the configuration (name of the attribute cellRenderer)
                 // to a javascript function
                 columnDefs.forEach(el => { if (el.cellRenderer != null) {
-                    //console.log("ag-grid - cellRenderer {} ", el.cellRenderer);
+                    console.log("ag-grid - cellRenderer {} ", el.cellRenderer);
                     el.cellRenderer = window.Vaadin.Flow.agGridRenderers[el.cellRenderer];
                     el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
-                        //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                        console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
                         c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
                     };
                 }});
@@ -70,9 +76,9 @@ window.Vaadin.Flow.agGridConnector = {
                 // add cellRendererFrameworkCallback in the column configuration to call actions
                 columnDefs.forEach(el => {
                     if (el.cellRendererFramework != null) {
-                        //console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                        console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
                         el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
-                            //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                            console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
                             c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
                         };
                     }
@@ -82,9 +88,9 @@ window.Vaadin.Flow.agGridConnector = {
                     if (el.children && el.children.length > 0) {
                         el.children.forEach(el => parseCellRendererFramework(el));
                     } else if (el.cellRendererFramework != null) {
-                        // console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                         console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
                         el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
-                            //console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
+                            console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
                             c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
                         };
                     }
@@ -109,7 +115,7 @@ window.Vaadin.Flow.agGridConnector = {
             },
 
             setRowCount : function(rowCount) {
-                this.agGrid.gridOptions.api.setInfiniteRowCount(rowCount);
+                this.agGrid.gridOptions.api.setRowCount(rowCount);
             },
 
             setDataSource : function() {
@@ -150,6 +156,11 @@ window.Vaadin.Flow.agGridConnector = {
 
         let gridParams = {
             modules: [InfiniteRowModelModule],
+
+            frameworkFactory: new PolymerFrameworkFactory(
+                new VanillaFrameworkOverrides(),
+                new PolymerComponentFactory()
+            ),
             // add polymer and lit components available for renderer
             providedBeanInstances: {
                 frameworkComponentWrapper: new PolymerFrameworkComponentWrapper()

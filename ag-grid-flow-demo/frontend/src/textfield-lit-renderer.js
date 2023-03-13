@@ -1,5 +1,5 @@
-import { LitElement, html } from 'lit-element';
-import '@vaadin/vaadin-text-field';
+import { LitElement, html } from 'lit';
+import '@vaadin/text-field';
 
 class TextfieldLitRenderer extends LitElement {
     static get properties() {
