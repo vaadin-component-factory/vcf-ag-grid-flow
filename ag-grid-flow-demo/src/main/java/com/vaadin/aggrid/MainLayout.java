@@ -23,10 +23,11 @@ public class MainLayout extends AppLayout {
         menuLayout.add(new RouterLink("Frozen columns", FrozenView.class));
         menuLayout.add(new RouterLink("Lit Component Renderer", LitComponentRendererView.class));
         menuLayout.add(new RouterLink("Polymer Component Renderer", PolymerComponentRendererView.class));
-        menuLayout.add(new RouterLink("Vaadin Template Renderer", VaadinGridTemplateRendererView.class));
+        menuLayout.add(new RouterLink("Vaadin Lit Renderer", VaadinGridLitRendererView.class));
         menuLayout.add(new RouterLink("Vaadin Component Renderer", VaadinGridComponentRendererView.class));
         menuLayout.add(new RouterLink("Callback DataProvider", CallbackDataProviderView.class));
         menuLayout.add(new RouterLink("300 Columns", AgGrid300ColumnsView.class));
+        menuLayout.add(new RouterLink("Vaadin Lazy 300 Columns", LazyVaadin300ColumnsView.class));
         menuLayout.add(new RouterLink("Vaadin 300 Columns", Vaadin300ColumnsView.class));
         addToDrawer(menuLayout);
         addToNavbar(drawerToggle);

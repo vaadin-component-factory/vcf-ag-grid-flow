@@ -86,7 +86,6 @@
                     <licenseName>apache_v2</licenseName>
                     <includes>
                         <include>**/main/**/*.java</include>
-                        <include>**/main/**/*.js</include>
                     </includes>
                     <failOnMissingHeader>true</failOnMissingHeader>
                     <failOnNotUptodateHeader>true</failOnNotUptodateHeader>

@@ -1,13 +1,13 @@
 package com.vaadin.aggrid;
 
 import com.vaadin.aggrid.bean.Person;
+import com.vaadin.aggrid.bean.PersonUtil;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.data.provider.DataProvider;
-import com.vaadin.flow.data.renderer.TemplateRenderer;
+import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.router.Route;
-import com.vaadin.aggrid.bean.PersonUtil;
 
 import java.util.Locale;
 
@@ -21,10 +21,10 @@ import java.util.Locale;
  *
  * @author jcgueriaud
  */
-@Route(value = "template-renderer", layout = MainLayout.class)
-public class VaadinGridTemplateRendererView extends Div {
+@Route(value = "lit-renderer", layout = MainLayout.class)
+public class VaadinGridLitRendererView extends Div {
 
-    public VaadinGridTemplateRendererView() {
+    public VaadinGridLitRendererView() {
         setSizeFull();
         Grid<Person> grid = buildAdvancedGrid();
         grid.setDataProvider(DataProvider.ofCollection(PersonUtil.buildPersons()));
@@ -38,17 +38,17 @@ public class VaadinGridTemplateRendererView extends Div {
                 .setFrozen(true)
                 .setHeader("Id").setKey("id")
                 .setSortable(true);
-        grid.addColumn(TemplateRenderer.<Person>of("<vaadin-button>[[item.firstname]]</vaadin-button>")
+        grid.addColumn(LitRenderer.<Person>of("<vaadin-button>${item.firstname}</vaadin-button>")
                 .withProperty("firstname", Person::getFirstName))
                 .setHeader("FirstName").setKey("firstname")
                 .setSortable(true);
-        grid.addColumn(TemplateRenderer.<Person>of("<vaadin-text-field value='[[item.lastname]]' />")
+        grid.addColumn(LitRenderer.<Person>of("<vaadin-text-field .value=\"${item.lastname}\" />")
                 .withProperty("lastname", Person::getLastName))
                 .setKey("lastname")
                 .setHeader("LastName")
                 .setSortable(true);
-        grid.addColumn(TemplateRenderer.<Person>of("<iron-icon icon='vaadin:[[item.icon]]'></iron-icon>")
-                .withProperty("icon", person ->
+        grid.addColumn(LitRenderer.<Person>of("<vaadin-icon .icon=\"${item.icon}\"></vaadin-icon>")
+                .withProperty("icon", person -> "vaadin:" +
                         ((person.getId() % 2 == 0)? VaadinIcon.COMPRESS_SQUARE:VaadinIcon.COMPRESS)
                                 .name().toLowerCase(Locale.ENGLISH).replace('_', '-')))
                 .setHeader("Age")

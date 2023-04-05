@@ -52,7 +52,6 @@ import java.util.stream.Stream;
  */
 @NpmPackage(value = "@ag-grid-community/styles",version = "29.1.0")
 @NpmPackage(value = "@ag-grid-community/core",version = "29.1.0")
-@NpmPackage(value = "@ag-grid-community/polymer",version = "26.2.2")
 @NpmPackage(value = "@ag-grid-community/infinite-row-model",version = "29.1.0")
 @JsModule("./ag-connector.js")
 @CssImport("@ag-grid-community/styles/ag-grid.min.css")

@@ -18,12 +18,10 @@
  * #L%
  */
 import {InfiniteRowModelModule} from '@ag-grid-community/infinite-row-model';
-import { Grid, VanillaFrameworkOverrides } from '@ag-grid-community/core';
+import { Grid } from '@ag-grid-community/core';
 
-import PolymerFrameworkComponentWrapper from "@ag-grid-community/polymer/src/PolymerFrameworkComponentWrapper.js";
-
-import PolymerComponentFactory from "@ag-grid-community/polymer/src/PolymerComponentFactory.js";
-import PolymerFrameworkFactory from "@ag-grid-community/polymer/src/PolymerFrameworkFactory.js";
+import WebFrameworkComponentWrapper from "./webcomponent/WebFrameworkComponentWrapper.js";
+import WebComponentFrameworkOverrides from "./webcomponent/WebComponentFrameworkOverrides.js";
 
 
 /**
@@ -64,7 +62,8 @@ window.Vaadin.Flow.agGridConnector = {
                 debugger;
                 // transform the configuration (name of the attribute cellRenderer)
                 // to a javascript function
-                columnDefs.forEach(el => { if (el.cellRenderer != null) {
+                columnDefs.forEach(el => {
+                    if (el.cellRenderer != null) {
                     console.log("ag-grid - cellRenderer {} ", el.cellRenderer);
                     el.cellRenderer = window.Vaadin.Flow.agGridRenderers[el.cellRenderer];
                     el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
@@ -72,11 +71,13 @@ window.Vaadin.Flow.agGridConnector = {
                         c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
                     };
                 }});
-                // register the framework renderer polymer or lit
+                // register the framework renderer web component
                 // add cellRendererFrameworkCallback in the column configuration to call actions
                 columnDefs.forEach(el => {
                     if (el.cellRendererFramework != null) {
                         console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                        el.cellRenderer = el.cellRendererFramework;
+                        delete el.cellRendererFramework;
                         el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
                             console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
                             c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
@@ -88,7 +89,9 @@ window.Vaadin.Flow.agGridConnector = {
                     if (el.children && el.children.length > 0) {
                         el.children.forEach(el => parseCellRendererFramework(el));
                     } else if (el.cellRendererFramework != null) {
-                         console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                        console.log("ag-grid - cellRendererFramework {} ", el.cellRendererFramework);
+                        el.cellRenderer = el.cellRendererFramework;
+                        delete el.cellRendererFramework;
                         el.cellRendererFrameworkCallback = (coldId, rowId, actionName) => {
                             console.log("ag-grid - callback {} {} {}", coldId, rowId, actionName);
                             c.$server.cellRendererFrameworkCallback(coldId, rowId, actionName);
@@ -157,13 +160,10 @@ window.Vaadin.Flow.agGridConnector = {
         let gridParams = {
             modules: [InfiniteRowModelModule],
 
-            frameworkFactory: new PolymerFrameworkFactory(
-                new VanillaFrameworkOverrides(),
-                new PolymerComponentFactory()
-            ),
-            // add polymer and lit components available for renderer
+            frameworkOverrides: new WebComponentFrameworkOverrides(),
+            // add  web component available for renderer
             providedBeanInstances: {
-                frameworkComponentWrapper: new PolymerFrameworkComponentWrapper()
+                frameworkComponentWrapper: new WebFrameworkComponentWrapper()
             }
         };
 
