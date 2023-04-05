@@ -59,7 +59,6 @@ window.Vaadin.Flow.agGridConnector = {
             },
             setColumnDefs : function(columnDefs) {
                 console.log("columnDefs {} ", columnDefs);
-                debugger;
                 // transform the configuration (name of the attribute cellRenderer)
                 // to a javascript function
                 columnDefs.forEach(el => {
