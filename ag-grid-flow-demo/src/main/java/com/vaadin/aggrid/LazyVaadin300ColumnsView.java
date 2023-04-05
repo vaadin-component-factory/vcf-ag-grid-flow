@@ -2,6 +2,7 @@ package com.vaadin.aggrid;
 
 import com.vaadin.aggrid.bean.Person;
 import com.vaadin.aggrid.bean.PersonUtil;
+import com.vaadin.flow.component.grid.ColumnRendering;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.provider.DataProvider;
@@ -20,7 +21,7 @@ public class LazyVaadin300ColumnsView extends Div {
     private Grid<Person> buildAdvancedGrid() {
         Grid<Person> grid = new Grid<>();
         grid.setSizeFull();
-        // grid.setColumnRendering(ColumnRendering.LAZY); Vaadin 24.1
+        grid.setColumnRendering(ColumnRendering.LAZY);
         grid.addColumn(Person::getId)
                 .setFrozen(true)
                 .setHeader("Id").setKey("id")
