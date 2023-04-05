@@ -35,7 +35,7 @@ public class CallbackDataProviderView extends Div {
                         },
                         // Second callback that gives the size, 1 million hardcoded
                         query -> 10000000);
-        grid.setDataProvider(dataProvider);
+        grid.setItems(dataProvider);
         add(grid);
     }
 

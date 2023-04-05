@@ -17,7 +17,7 @@ public class AgGrid300ColumnsView extends Div {
         setSizeFull();
         AgGrid<Person> grid = buildGrid();
         grid.refreshColumnDefs();
-        grid.setDataProvider(DataProvider.ofCollection(PersonUtil.buildPersons()));
+        grid.setItems(DataProvider.ofCollection(PersonUtil.buildPersons()));
         add(grid);
     }
 

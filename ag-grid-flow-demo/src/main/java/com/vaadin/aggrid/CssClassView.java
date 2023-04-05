@@ -25,7 +25,7 @@ public class CssClassView extends Div {
         setSizeFull();
         AgGrid<Person> grid = buildGrid();
         grid.refreshColumnDefs();
-        grid.setDataProvider(DataProvider.ofCollection(PersonUtil.buildPersons()));
+        grid.setItems(DataProvider.ofCollection(PersonUtil.buildPersons()));
         add(grid);
     }
 

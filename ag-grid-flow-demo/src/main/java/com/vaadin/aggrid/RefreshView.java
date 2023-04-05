@@ -26,7 +26,7 @@ public class RefreshView extends VerticalLayout {
         grid.refreshColumnDefs();
         List<Person> items = PersonUtil.buildPersons();
         ListDataProvider<Person> dataProvider = DataProvider.ofCollection(items);
-        grid.setDataProvider(dataProvider);
+        grid.setItems(dataProvider);
         add(new Button("Add a new person and refresh all", event -> {
             id++;
             items.add(generateRandom(id));

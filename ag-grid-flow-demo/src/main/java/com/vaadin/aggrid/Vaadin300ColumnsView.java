@@ -13,7 +13,7 @@ public class Vaadin300ColumnsView extends Div {
     public Vaadin300ColumnsView() {
         setSizeFull();
         Grid<Person> grid = buildAdvancedGrid();
-        grid.setDataProvider(DataProvider.ofCollection(PersonUtil.buildPersons()));
+        grid.setItems(DataProvider.ofCollection(PersonUtil.buildPersons()));
         add(grid);
     }
 

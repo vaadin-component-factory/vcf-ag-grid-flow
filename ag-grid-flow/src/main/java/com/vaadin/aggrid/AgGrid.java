@@ -89,11 +89,15 @@ public class AgGrid<T> extends Div {
         return dataProvider;
     }
 
-    public void setDataProvider(DataProvider<T, ?> dataProvider) {
+    public void setItems(DataProvider<T, ?> dataProvider) {
         this.dataProvider = dataProvider;
         runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.setDataSource"));
         setupDataProviderListener(dataProvider);
+    }
+    @Deprecated
+    public void setDataProvider(DataProvider<T, ?> dataProvider) {
+        setItems(dataProvider);
     }
 
     @Override

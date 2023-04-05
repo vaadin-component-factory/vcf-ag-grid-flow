@@ -31,7 +31,7 @@ public class RendererView extends Div {
         setSizeFull();
         AgGrid<Person> grid = buildAdvancedGrid();
         grid.refreshColumnDefs();
-        grid.setDataProvider(DataProvider.ofCollection(PersonUtil.buildPersons()));
+        grid.setItems(DataProvider.ofCollection(PersonUtil.buildPersons()));
         add(grid);
     }
 
